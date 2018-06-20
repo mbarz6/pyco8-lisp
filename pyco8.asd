@@ -9,4 +9,5 @@
  :components ((:file "package")
               (:file "src/renderer/shader")
               (:file "src/renderer/renderer")
+              (:file "src/renderer/sprites")
               (:file "src/utilities")))

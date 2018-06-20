@@ -11,4 +11,4 @@
   (if chr
    (multiple-value-bind (left right) (split str chr)
     (cons left (lines right)))
-   str)))
+   (cons str ()))))
