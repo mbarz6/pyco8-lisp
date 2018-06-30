@@ -12,3 +12,8 @@
    (multiple-value-bind (left right) (split str chr)
     (cons left (lines right)))
    (cons str ()))))
+
+(defun repeat (item times)
+ (if (<= times 0)
+  nil
+  (cons item (repeat item (- times 1)))))

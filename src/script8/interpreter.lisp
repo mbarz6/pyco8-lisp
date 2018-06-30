@@ -64,21 +64,21 @@
  (setf (get-stack self) (cons value (get-stack self))))
 
 ;; generates a method on the interpreter that applies
-;; some binary operator to two arguments popped off the stack,
+;; operator to num-args arguments popped off the stack,
 ;; and pushes the result onto the stack
-;; TODO: defmacro make-operator (name operator num-args)
-(defmacro make-binary-operator (name operator)
+(defmacro make-operator (name operator num-args)
  `(defmethod ,name ((self interpreter))
-   (push-vm self 
-    (,operator (pop-vm self) (pop-vm self)))))
+   (push-vm ,(cons operator (repeat '(pop-vm self) num-args)) self)))
 
-(make-binary-operator add-vm +)
-(make-binary-operator sub-vm -)
-(make-binary-operator eq-vm equal)
-(make-binary-operator gt-vm >)
-(make-binary-operator lt-vm <)
-(make-binary-operator and-vm and)
-(make-binary-operator or-vm or)
+
+(make-operator not-vm not 1)
+(make-operator add-vm + 2)
+(make-operator sub-vm - 2)
+(make-operator eq-vm equal 2)
+(make-operator gt-vm > 2)
+(make-operator lt-vm < 2)
+(make-operator and-vm and 2)
+(make-operator or-vm or 2)
 
 ;; run the current line, advance to next instruction
 (defmethod run-and-advance ((self interpreter))
