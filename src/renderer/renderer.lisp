@@ -7,10 +7,8 @@
 (defvar *size* 512)
 (defvar *shader-program* (make-instance 'shader-program))
 (defvar *vao* nil)
-(defvar *vbo_vertices* nil)
+(defvar *vbo-vertices* nil)
 (defvar *ndc-coord* (* 2.0 (/ *scale* *size*)))
-(defvar *width* *size*)
-(defvar *height* *size*)
 (defvar *sprites* nil)
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -67,11 +65,11 @@
    (gl:clear-color 0 0 0 0)
 
    ;;; create/configure the vao
-   (setf *vbo_vertices* (gl:gen-buffer))
+   (setf *vbo-vertices* (gl:gen-buffer))
    (setf *vao* (gl:gen-vertex-array))
    
    (gl:bind-vertex-array *vao*)
-   (gl:bind-buffer :array-buffer *vbo_vertices*)
+   (gl:bind-buffer :array-buffer *vbo-vertices*)
 
    ;; create the vertex array
    ;; we need to load a lisp vector into a gl-array to pass it to opengl functions

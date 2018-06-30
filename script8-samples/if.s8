@@ -1,0 +1,10 @@
+boolean = true
+wrong = false
+
+x = 0
+if wrong
+ x = 2
+elif boolean
+ x = 4
+else
+ x = 5

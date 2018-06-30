@@ -1,0 +1,34 @@
+; Registers and stack used
+; Compiler decides on registers for variables
+; Stack used on things like 2 * x + y
+
+; @1 is x
+; @2 is y
+; @3 is z
+; @4 is a
+
+store-constant 1 2 ; stores constant 2 in register 1, analogous to x = 2
+
+; y = x - 1
+push-register 1     ; pushes contents of register 1 onto stack, so stack: 2
+push-constant 1     ; stack: 1 2
+sub                 ; stack: 1
+pop 2              ; @2 is now 1, stack is now empty
+
+; x = y / x
+push-register 2
+push-register 1
+div
+pop 1
+
+; z = x * y
+push-register 1
+push-register 2
+mul
+pop 3
+
+; a = x + 1
+push-register 1
+push-constant 1
+add
+pop 4

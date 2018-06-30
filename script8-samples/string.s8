@@ -1,0 +1,3 @@
+string = "Hello"
+string2 = "World!"
+message = string + ", " + string2

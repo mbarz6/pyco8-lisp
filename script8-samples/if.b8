@@ -1,0 +1,11 @@
+push-bool 1 true
+push-bool 2 false
+push-constant 3 0
+
+if-not-goto 2 8 ; if @2 contains false, goto line 8 
+push-constant 3 2
+goto 12
+if-not-goto 1 11 
+push-constant 3 4
+goto 12
+push-constant 3 5

@@ -10,4 +10,6 @@
               (:file "src/renderer/shader")
               (:file "src/renderer/renderer")
               (:file "src/renderer/sprites")
-              (:file "src/utilities")))
+              (:file "src/utilities")
+              (:file "src/script8/lexer")
+              (:file "src/script8/interpreter")))

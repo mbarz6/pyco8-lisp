@@ -1,0 +1,8 @@
+function foobar()
+ return 5
+
+function baz(x, y)
+ return x * y
+
+x = baz(1, 2)
+y = foobar()
