@@ -2,6 +2,10 @@
 
 (in-package pyco8)
 
+;; creates a new, dynamic, empty vector
+(defun new-vector ()
+ (make-array 0 :fill-pointer 0 :adjustable t))
+
 (defclass interpreter () 
  ((stack 
    :initform ()
@@ -11,7 +15,32 @@
   (current-instruction
    :initform 0
    :writer goto
-   :reader current-instruction)))
+   :reader current-instruction)
+  (statics
+   :initform (new-vector))
+  (locals 
+   :initform (new-vector))))
+
+;; generates four helper methods for an array
+;; the first, a get method, fetches from array
+;; the second sets in the array
+;; the third adds a new item to end of array
+;; the fourth deletes item at end of array
+(defmacro gen-array-helper-methods (array-name get-name set-name new-name del-name)
+ `(progn
+   (defmethod ,get-name (index (self interpreter))
+    (elt (slot-value self ',array-name) index))
+   (defmethod ,set-name (index value (self interpreter))
+    (setf (elt (slot-value self ',array-name) index) value))
+   (defmethod ,new-name (value (self interpreter))
+    (vector-push-extend value (slot-value self ',array-name)))
+   (defmethod ,del-name ((self interpreter))
+    (vector-pop (slot-value self ',array-name)))))
+
+(gen-array-helper-methods statics get-static set-static new-static kill-static)
+(gen-array-helper-methods locals get-local set-local new-local end-local)
+
+;;; VM instructions
 
 (defmethod goto-if (line (self interpreter))
  (if (pop-vm self)
@@ -34,13 +63,9 @@
 (defmethod push-vm (value (self interpreter))
  (setf (get-stack self) (cons value (get-stack self))))
 
-;; declare a function
-
-
 ;; generates a method on the interpreter that applies
 ;; some binary operator to two arguments popped off the stack,
 ;; and pushes the result onto the stack
-
 ;; TODO: defmacro make-operator (name operator num-args)
 (defmacro make-binary-operator (name operator)
  `(defmethod ,name ((self interpreter))
@@ -54,5 +79,12 @@
 (make-binary-operator lt-vm <)
 (make-binary-operator and-vm and)
 (make-binary-operator or-vm or)
-(make-binary-operator not-vm not)
 
+;; run the current line, advance to next instruction
+(defmethod run-and-advance ((self interpreter))
+ (let ((instructions (slot-value self 'instructions))
+       (current (current-instruction self)))
+  (goto (+ current 1) self)
+  (apply 
+   (elt instructions current)
+   (elt instructions (+ current 1)))))
