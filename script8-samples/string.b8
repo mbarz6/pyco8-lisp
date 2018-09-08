@@ -1,9 +1,0 @@
-store-string 1 Hello
-store-string 2 World!
-
-push-register 1
-push-string , 
-concat
-push-register 2
-concat
-pop 3

@@ -1,5 +1,0 @@
-x = 2
-y = x - 1
-x = y / x // x is now 0.5
-z = x * y
-a = x + 1
